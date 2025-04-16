@@ -1,0 +1,27 @@
+[
+    {
+      "code": "DAC",
+      "name": "Hazrat Shahjalal Intl Airport",
+      "city": "Dhaka",
+      "country": "Bangladesh"
+    },
+    {
+      "code": "CXB",
+      "name": "Cox’s Bazar Airport",
+      "city": "Cox’s Bazar",
+      "country": "Bangladesh"
+    },
+    {
+      "code": "JSR",
+      "name": "Jashore Airport",
+      "city": "Jashore",
+      "country": "Bangladesh"
+    },
+    {
+      "code": "BZL",
+      "name": "Barishal Airport",
+      "city": "Barishal",
+      "country": "Bangladesh"
+    }
+  ]
+  
