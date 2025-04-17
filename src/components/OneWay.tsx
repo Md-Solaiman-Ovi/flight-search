@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Autocomplete, TextField } from "@mui/material";
 import FlightOutlinedIcon from "@mui/icons-material/FlightOutlined";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import airports from "../data/airports.json";
-
+import { useNavigate } from "react-router-dom";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { styled } from "@mui/material/styles";
+import { useFlightSearchFunction } from "../context/FlightSearchFunctionContext";
 
 interface Airport {
   code: string;
@@ -44,30 +45,69 @@ const StyledDatePicker = styled(DatePicker)(() => ({
   },
 }));
 
-const OneWay: React.FC = () => {
+interface OneWayProps {
+  setFrom: React.Dispatch<React.SetStateAction<string>>;
+  setTo: React.Dispatch<React.SetStateAction<string>>;
+  setDepartureDate: React.Dispatch<React.SetStateAction<Date | null>>;
+}
+
+const OneWay: React.FC<OneWayProps> = ({
+  setFrom,
+  setTo,
+  setDepartureDate,
+}) => {
   const [fromAirport, setFromAirport] = useState<Airport | undefined>(
     airports[0]
   );
   const [toAirport, setToAirport] = useState<Airport | undefined>(airports[1]);
-
   const [fromOpen, setFromOpen] = useState(false);
   const [toOpen, setToOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
-
   const [fromInputValue, setFromInputValue] = useState("");
   const [toInputValue, setToInputValue] = useState("");
-  const [departureDate, setDepartureDate] = useState<Date | null>(new Date());
+  const [departureDate, setLocalDepartureDate] = useState<Date | null>(
+    new Date()
+  );
+
+  const navigate = useNavigate();
+
+  const { registerSearchFn } = useFlightSearchFunction();
+
+  useEffect(() => {
+    // Define the search function here
+    const handleSearchClick = () => {
+      // Update parent state
+      if (fromAirport && toAirport && departureDate) {
+        setFrom(fromAirport.code);
+        setTo(toAirport.code);
+        setDepartureDate(departureDate);
+
+        navigate("/flight-list", {
+          state: {
+            from: fromAirport.code,
+            to: toAirport.code,
+            date: departureDate.toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "2-digit",
+            }),
+          },
+        });
+      }
+    };
+
+    registerSearchFn(handleSearchClick);
+  }, [registerSearchFn]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <div className="relative w-full z-10 flex justify-between bg-white ">
+      <div className="relative w-full z-10 flex justify-between bg-white">
         {/* FROM */}
         <div className="w-1/3">
           <p className="text-center text-sm text-gray-500">FROM</p>
           <h2 className="text-4xl font-bold text-center text-[#32d095]">
             {fromAirport?.code}
           </h2>
-
           <div
             className="mt-2 flex items-center gap-2 bg-[#EAF2FF] p-2 rounded-md cursor-pointer"
             onClick={() => {
@@ -160,11 +200,8 @@ const OneWay: React.FC = () => {
               <StyledDatePicker
                 value={departureDate}
                 onChange={(newValue) => {
-                  // Ensure that the value is a Date object
                   if (newValue instanceof Date || newValue === null) {
-                    setDepartureDate(newValue);
-                  } else {
-                    setDepartureDate(newValue.toDate()); // Convert Dayjs to Date if necessary
+                    setLocalDepartureDate(newValue);
                   }
                   setCalendarOpen(false);
                 }}
@@ -201,7 +238,6 @@ const OneWay: React.FC = () => {
           <h2 className="text-4xl font-bold text-center text-[#32d095]">
             {toAirport?.code}
           </h2>
-
           <div
             className="mt-2 flex items-center gap-2 bg-[#EAF2FF] p-2 rounded-md cursor-pointer"
             onClick={() => {
@@ -274,6 +310,16 @@ const OneWay: React.FC = () => {
             />
           )}
         </div>
+
+        {/* Search Button */}
+        {/* <div className="w-full mt-6 flex justify-center">
+          <button
+            onClick={handleSearchClick}
+            className="bg-[#32d095] text-white px-6 py-2 rounded-full text-xl"
+          >
+            Search Flights
+          </button>
+        </div> */}
       </div>
     </LocalizationProvider>
   );

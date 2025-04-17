@@ -1,20 +1,20 @@
 // import FlightSearchCard from "./FlightSearchCard";
-import FlightSearchContainer from "./FlightSearchContainer";
-import TopNavbar from "./TopNavBar";
+import FlightSearchContainer from "../components/FlightSearchContainer";
+import TopNavbar from "../components/TopNavBar";
 import HomeWorkOutlinedIcon from "@mui/icons-material/HomeWorkOutlined";
 import TravelExploreOutlinedIcon from "@mui/icons-material/TravelExploreOutlined";
 import AirplaneTicketOutlinedIcon from "@mui/icons-material/AirplaneTicketOutlined";
 import FlightOutlinedIcon from "@mui/icons-material/FlightOutlined";
 import { useState } from "react";
-import BookingTypeButton from "./BookingTypeButton";
-import ImageCarousel from "./ImageCarousel";
+import BookingTypeButton from "../components/BookingTypeButton";
+import ImageCarousel from "../components/ImageCarousel";
 import img1 from "../assets/sliderimg1.webp";
 import img2 from "../assets/sliderimg2.webp";
 import img3 from "../assets/sliderimg3.webp";
 import img4 from "../assets/sliderimg4.webp";
 import img5 from "../assets/sliderimg5.webp";
 
-import HotDetails from "./HotDetails";
+import HotDetails from "../components/HotDetails";
 
 const images = [img1, img2, img3, img4, img5];
 

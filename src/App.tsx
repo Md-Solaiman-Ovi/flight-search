@@ -1,28 +1,33 @@
-// App.tsx
-// import { useState } from "react";
-// import SearchTabs from "./components/SearchTabs";
-// import OneWaySearch from "./components/OneWaySearch";
-// import RoundTripSearch from "./components/RoundTripSearch";
-// import MultiCityDesign from "./components/MultiCityDesign";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { FlightList } from "./pages/FlightList";
+import Home from "./pages/Home";
+import { FlightSearchFunctionContext } from "./context/FlightSearchFunctionContext";
+import { useRef } from "react";
 
-import Home from "./components/Home";
+function App() {
+  const searchFnRef = useRef<() => void>(() => {});
 
-const App = () => {
-  // const [tab, setTab] = useState(0);
+  const registerSearchFn = (fn: () => void) => {
+    searchFnRef.current = fn;
+  };
+  const runSearch = () => {
+    if (searchFnRef.current) {
+      searchFnRef.current();
+    }
+  };
 
   return (
-    // <div className="p-4 max-w-4xl mx-auto">
-    //   <SearchTabs selectedTab={tab} onChange={(e, newVal) => setTab(newVal)} />
-    //   {tab === 0 && <OneWaySearch />}
-    //   {tab === 1 && <RoundTripSearch />}
-    //   {tab === 2 && <MultiCityDesign />}
-
-    // </div>
-    <div>
-      {" "}
-      <Home />
-    </div>
+    <FlightSearchFunctionContext.Provider
+      value={{ registerSearchFn, runSearch }}
+    >
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/flight-list" element={<FlightList />} />
+        </Routes>
+      </Router>
+    </FlightSearchFunctionContext.Provider>
   );
-};
+}
 
 export default App;

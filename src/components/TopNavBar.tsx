@@ -1,6 +1,7 @@
 // src/components/TopNavbar.tsx
 import React from "react";
 import { Box, Button } from "@mui/material";
+import logo from "../assets/companylogo.webp";
 
 const TopNavbar: React.FC = () => {
   return (
@@ -8,11 +9,7 @@ const TopNavbar: React.FC = () => {
       <div className="flex items-center justify-between px-8 py-4  max-w-[1200px] mx-auto">
         {/* Logo image */}
         <Box sx={{ flexGrow: 1 }}>
-          <img
-            src="src\assets\companylogo.webp"
-            alt="Fly Far Tech Logo"
-            style={{ height: 70 }}
-          />
+          <img src={logo} alt="Fly Far Tech Logo" style={{ height: 70 }} />
         </Box>
 
         {/* Right Buttons */}
