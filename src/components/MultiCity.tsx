@@ -32,7 +32,7 @@ const MultiCity: React.FC = () => {
             <div className="col-span-3 flex flex-col text-start">
               <p className="text-center text-sm text-gray-500">FROM</p>
               <h2 className="text-4xl font-bold text-center text-[#32d095]">
-                DAC
+                {segment.from}
               </h2>
               <div className="flex items-center gap-2 bg-[#EAF2FF] p-2 rounded-md mt-2">
                 <LocationOnIcon fontSize="small" />
